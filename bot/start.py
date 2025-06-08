@@ -22,8 +22,8 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("➕ ADD ME TO YOUR GROUP", url=f"https://t.me/{BOT_USERNAME}?startgroup=true")],
         [
-            InlineKeyboardButton("🤝 SUPPORT", url="https://t.me/YourSupportChannel"),
-            InlineKeyboardButton("👥 SUPPORT CHAT", url="https://t.me/YourSupportChat")
+            InlineKeyboardButton("🤝 SUPPORT", url="https://t.me/NazkiUpdates"),
+            InlineKeyboardButton("SUPPORT CHAT", url="https://t.me/NazkiSupport")
         ],
         [InlineKeyboardButton("📜 COMMANDS", callback_data="help_commands")]
     ]
