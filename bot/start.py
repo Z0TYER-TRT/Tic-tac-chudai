@@ -7,9 +7,9 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
 
     # Big emoji reaction
-    await update.message.react("🔥")
+    await update.message.react("🍓")
 
-    emojis = ["🟥", "🟦", "🟩"]
+    emojis = ["🔮", "❄", "☃️"]
     messages = []
     for emoji in emojis:
         msg = await context.bot.send_message(chat_id, emoji)
