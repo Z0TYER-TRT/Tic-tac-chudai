@@ -1,5 +1,5 @@
 from telegram.ext import CommandHandler, CallbackQueryHandler
-from bot.start import start_command, help_callback, back_to_start
+from bot.start import start_command, help_callback, back_to_start, help_2
 from bot.challenge import challenge_command, button_callback
 from bot.game import game_button_callback
 from bot.score import myscore_command, topscore_command
@@ -10,7 +10,10 @@ def register_handlers(app):
     app.add_handler(CommandHandler("challenge", challenge_command))
     app.add_handler(CommandHandler("myscore", myscore_command))
     app.add_handler(CommandHandler("topscore", topscore_command))
+    
+    # Callback Query Handlers
     app.add_handler(CallbackQueryHandler(button_callback, pattern="^(confirm|cancel)_"))
     app.add_handler(CallbackQueryHandler(game_button_callback, pattern="^move_"))
     app.add_handler(CallbackQueryHandler(help_callback, pattern="^help_commands$"))
-    app.add_handler(CallbackQueryHandler(back_to_start, pattern="^start_back$"))
+    app.add_handler(CallbackQueryHandler(help_2, pattern="^group_help$"))
+    app.add_handler(CallbackQueryHandler(back_to_start, pattern="^(start_back|close_help)$"))
