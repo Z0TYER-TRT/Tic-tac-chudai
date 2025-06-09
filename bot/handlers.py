@@ -3,7 +3,6 @@ from bot.start import (
     start_command,
     help_callback,
     back_to_start,
-    help_2,
 )
 from bot.challenge import challenge_command, button_callback
 from bot.game import game_button_callback
