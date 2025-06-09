@@ -2,7 +2,7 @@ from telegram.ext import CommandHandler, CallbackQueryHandler
 from bot.start import start_command, help_callback, back_to_start
 from bot.challenge import challenge_command, button_callback
 from bot.game import game_button_callback
-from bot.score import myscore_command, topscore_command, topscore_group_command
+from bot.score import myscore_command, topscore_command
 
 def register_handlers(app):
     app.add_handler(CommandHandler("start", start_command))
