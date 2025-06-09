@@ -22,6 +22,5 @@ def register_handlers(app):
 
     # ✅ Bot UI Navigation Callbacks
     app.add_handler(CallbackQueryHandler(help_callback, pattern="^help_commands$"))       # DM Help
-    app.add_handler(CallbackQueryHandler(help_2, pattern="^group_help$"))                 # Group Help
     app.add_handler(CallbackQueryHandler(back_to_start, pattern="^start_back$"))          # Back button in DM
     app.add_handler(CallbackQueryHandler(back_to_start, pattern="^close_help$"))          # Close button in group
