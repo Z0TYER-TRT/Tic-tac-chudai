@@ -102,7 +102,7 @@ async def help_2(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return  # ignore if no button press
 
     keyboard = [
-        [InlineKeyboardButton("Close", callback_data="start_back")]
+        [InlineKeyboardButton("Close", callback_data="close_help")]
     ]
 
     await query.message.edit_text(
