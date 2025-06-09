@@ -6,69 +6,63 @@ from telegram.ext import ContextTypes
 client = AsyncIOMotorClient(MONGO_URI)
 db = client[DB_NAME]
 
-# Add win count
 async def add_win(user_id, username, chat_id):
     await db.scores.update_one(
         {"user_id": user_id},
-        {"$inc": {"global": 1, f"group_{chat_id}": 1}, "$set": {"username": username}},
+        {
+            "$inc": {"total_wins": 1, f"group_{chat_id}": 1},
+            "$set": {"username": username}
+        },
         upsert=True
     )
 
-# Get user's score
-async def get_user_score(user_id, chat_id):
-    data = await db.scores.find_one({"user_id": user_id}) or {}
-    return {
-        "total": data.get("global", 0),
-        "group": data.get(f"group_{chat_id}", 0),
-        "username": data.get("username", "Unknown")
-    }
+async def get_user_data(user_id):
+    return await db.scores.find_one({"user_id": user_id}) or {}
 
-# Get top total win players
-async def get_top_scores_global(limit=10):
-    cursor = db.scores.find().sort("global", -1).limit(limit)
-    return [doc async for doc in cursor]
-
-# Get global rank
 async def get_global_rank(user_id):
     pipeline = [
-        {"$setWindowFields": {
-            "sortBy": {"global": -1},
-            "output": {"rank": {"$rank": {}}}
-        }},
-        {"$match": {"user_id": user_id}},
-        {"$project": {"rank": 1}}
+        {"$sort": {"total_wins": -1}},
+        {"$project": {"user_id": 1}},
     ]
-    result = await db.scores.aggregate(pipeline).to_list(1)
-    return result[0]["rank"] if result else None
+    cursor = db.scores.aggregate(pipeline)
+    rank = 1
+    async for user in cursor:
+        if user["user_id"] == user_id:
+            return rank
+        rank += 1
+    return None  # If not found
 
-# /myscore command
+async def get_top_scores(limit=10):
+    cursor = db.scores.find().sort("total_wins", -1).limit(limit)
+    return [doc async for doc in cursor]
+
 async def myscore_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    chat_id = update.effective_chat.id
+    user = update.effective_user
+    user_id = user.id
+    user_data = await get_user_data(user_id)
+    total_wins = user_data.get("total_wins", 0)
+    username = user_data.get("username") or user.username or user.first_name
+    rank = await get_global_rank(user_id)
 
-    score = await get_user_score(user_id, chat_id)
-    global_rank = await get_global_rank(user_id)
+    rank_text = f"{rank}" if rank else "Unranked"
+
+    mention = f"<a href='tg://user?id={user_id}'>{username}</a>"
 
     await update.message.reply_text(
-        f"🏅 <b>Your Score</b>\n"
-        f"👤 Username: {score['username']}\n"
-        f"🥇 Total Wins: <b>{score['total']}</b>\n"
-        f"📊 Global Rank: <b>{global_rank or 'Unranked'}</b>",
+        f"🎖 <b>Your Score</b>\n\n"
+        f"👤 Username: {mention}\n"
+        f"🏆 Total Wins: <b>{total_wins}</b>\n"
+        f"📊 Global Rank: <b>{rank_text}</b>",
         parse_mode="HTML"
     )
 
-# /scoreboard command
 async def topscore_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    top = await get_top_scores_global()
+    top = await get_top_scores()
     text = "<b>🌍 Global Leaderboard (Top 10)</b>\n\n"
     for i, user in enumerate(top, 1):
-        mention = f"<a href='tg://user?id={user['user_id']}'>{user.get('username', 'Unknown')}</a>"
-        text += f"{i}. {mention} — {user['global']} total wins\n"
-
-    # Show current top player
-    if top:
-        first = top[0]
-        top_player = f"<a href='tg://user?id={first['user_id']}'>{first.get('username', 'Unknown')}</a>"
-        text += f"\n🏆 <b>#1 Player:</b> {top_player} with {first['global']} total wins!"
+        username = user.get("username", "Unknown")
+        wins = user.get("total_wins", 0)
+        mention = f"<a href='tg://user?id={user['user_id']}'>{username}</a>"
+        text += f"{i}. {mention} — {wins} wins\n"
 
     await update.message.reply_text(text, parse_mode="HTML")
