@@ -10,7 +10,6 @@ def register_handlers(app):
     app.add_handler(CommandHandler("challenge", challenge_command))
     app.add_handler(CommandHandler("myscore", myscore_command))
     app.add_handler(CommandHandler("topscore", topscore_command))
-    app.add_handler(CommandHandler("topscoregroup", topscore_group_command))
     app.add_handler(CallbackQueryHandler(button_callback, pattern="^(confirm|cancel)_"))
     app.add_handler(CallbackQueryHandler(game_button_callback, pattern="^move_"))
     app.add_handler(CallbackQueryHandler(help_callback, pattern="^help_commands$"))
