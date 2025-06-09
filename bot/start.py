@@ -118,11 +118,7 @@ async def help_2(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # 🔙 Back Button in DM (no emoji animation)
 async def back_to_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    if not query:
-        return
-
-    await query.message.delete()
-
+    
     keyboard = [
         [InlineKeyboardButton("➕ ADD ME TO YOUR GROUP", url=f"https://t.me/{context.bot.username}?startgroup=true")],
         [
