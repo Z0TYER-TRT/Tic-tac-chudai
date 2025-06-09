@@ -68,7 +68,7 @@ async def help_dm(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # 🆘 /help handler
-async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def help_2(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_chat.type == "private":
         await help_dm(update, context)
     else:
@@ -96,13 +96,13 @@ async def start_2(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # 🟢 Group Help (from start_2 Help button)
-async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def help_2(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     if not query:
         return  # ignore if no button press
 
     keyboard = [
-        [InlineKeyboardButton("🔙 Back", callback_data="start_back")]
+        [InlineKeyboardButton("Close", callback_data="start_back")]
     ]
 
     await query.message.edit_text(
