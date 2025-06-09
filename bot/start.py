@@ -14,7 +14,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     args = context.args
     if args and args[0] == "help":
-        await help_dm(update, context)
+        await help_callback(update, context)
         return
 
     chat_id = update.effective_chat.id
@@ -46,7 +46,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # 🆘 DM Help
-async def help_dm(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message:
         msg = update.message
     elif update.callback_query:
