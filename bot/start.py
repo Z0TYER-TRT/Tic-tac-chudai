@@ -9,7 +9,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id = update.effective_chat.id
 
         # Emoji animation
-        emojis = ["🔮", "❄", "☃️"]
+        emojis = ["🔮"]
         for emoji in emojis:
             msg = await context.bot.send_message(chat_id, emoji)
             await asyncio.sleep(0.3)
