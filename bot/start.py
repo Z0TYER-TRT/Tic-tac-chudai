@@ -115,23 +115,13 @@ async def help_2(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# 🔙 Back Button in DM
+# 🔙 Back Button in DM (no emoji animation)
 async def back_to_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     if not query:
         return
 
-    chat_id = query.message.chat.id
     await query.message.delete()
-
-    emojis = ["🔮", "❄", "☃️"]
-    for emoji in emojis:
-        msg = await context.bot.send_message(chat_id, emoji)
-        await asyncio.sleep(0.3)
-        await msg.delete()
-
-    start_msg = await context.bot.send_message(chat_id, "<b>Starting...</b>", parse_mode="HTML")
-    await asyncio.sleep(1)
 
     keyboard = [
         [InlineKeyboardButton("➕ ADD ME TO YOUR GROUP", url=f"https://t.me/{context.bot.username}?startgroup=true")],
@@ -142,10 +132,13 @@ async def back_to_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("📜 COMMANDS", callback_data="help_commands")]
     ]
 
-    await start_msg.edit_text(
-        "<b>🎮 Welcome to Tic Tac Toe Bot!</b>\n\n"
-        "Play 1v1 Tic Tac Toe using inline buttons in group chats.\n"
-        "Challenge your friends and enjoy!",
+    await context.bot.send_message(
+        chat_id=query.message.chat.id,
+        text=(
+            "<b>🎮 Welcome to Tic Tac Toe Bot!</b>\n\n"
+            "Play 1v1 Tic Tac Toe using inline buttons in group chats.\n"
+            "Challenge your friends and enjoy!"
+        ),
         reply_markup=InlineKeyboardMarkup(keyboard),
         parse_mode="HTML"
     )
