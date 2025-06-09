@@ -6,7 +6,7 @@ from telegram.ext import ContextTypes
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_chat.type == "private":
         chat_id = update.effective_chat.id
-        emojis = ["🔮", "❄", "☃️"]
+        emojis = ["🔮"]
         for emoji in emojis:
             msg = await context.bot.send_message(chat_id, emoji)
             await asyncio.sleep(0.3)
