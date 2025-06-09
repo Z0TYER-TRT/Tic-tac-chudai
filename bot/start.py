@@ -96,29 +96,30 @@ async def start_2(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 # 🟢 Group Help (from start_2 Help button)
-async def help_2(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     if not query:
-        return
+        return  # ignore if no button press
+
+    keyboard = [
+        [InlineKeyboardButton("🔙 Back", callback_data="start_back")]
+    ]
 
     await query.message.edit_text(
-        "📖 *Tic Tac Toe Commands (Group):*\n\n"
-        "`/challenge` - Start a game\n"
-        "`/myscore` - Your score\n"
-        "`/topscore` - Global leaderboard\n"
-        "`/topscoregroup` - Group leaderboard\n"
-        "`/start` - Restart the welcome message",
-        parse_mode="Markdown",
-        reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("❌ Close", callback_data="close_help")]
-        ])
-    )
+        "📖 <b>Tic Tac Toe Help</b>\n\n"
+        "/challenge - Challenge someone to a game\n"
+        "/myscore - Check your score\n"
+        "/topscore - Global top players\n"
+        "/topscoregroup - Top players in this group",
+        reply_markup=InlineKeyboardMarkup(keyboard),
+        parse_mode="HTML"
+                       )
 
 
 # 🔙 Back Button in DM (no emoji animation)
 async def back_to_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
-    
+
     keyboard = [
         [InlineKeyboardButton("➕ ADD ME TO YOUR GROUP", url=f"https://t.me/{context.bot.username}?startgroup=true")],
         [
@@ -128,13 +129,10 @@ async def back_to_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("📜 COMMANDS", callback_data="help_commands")]
     ]
 
-    await context.bot.send_message(
-        chat_id=query.message.chat.id,
-        text=(
-            "<b>🎮 Welcome to Tic Tac Toe Bot!</b>\n\n"
-            "Play 1v1 Tic Tac Toe using inline buttons in group chats.\n"
-            "Challenge your friends and enjoy!"
-        ),
+    await query.message.edit_text(
+        "<b>🎮 Welcome to Tic Tac Toe Bot!</b>\n\n"
+        "Play 1v1 Tic Tac Toe using inline buttons in group chats.\n"
+        "Challenge your friends and enjoy!",
         reply_markup=InlineKeyboardMarkup(keyboard),
         parse_mode="HTML"
     )
