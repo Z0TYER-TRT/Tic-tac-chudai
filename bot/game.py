@@ -1,5 +1,6 @@
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes
+from bot.score import add_win  # ✅ Import the win function
 
 active_games = {}
 
@@ -62,7 +63,13 @@ async def game_button_callback(update: Update, context: ContextTypes.DEFAULT_TYP
 
     winner = check_winner(game["board"])
     if winner:
+        # Announce winner
         await query.edit_message_text(f"🏆 {query.from_user.mention_html()} wins!", parse_mode="HTML")
+
+        # ✅ Save win to database
+        username = query.from_user.username or query.from_user.full_name
+        await add_win(user_id=user_id, username=username, chat_id=chat_id)
+
         del active_games[chat_id]
         return
 
@@ -78,4 +85,4 @@ async def game_button_callback(update: Update, context: ContextTypes.DEFAULT_TYP
         f"🎯 Turn: {game['usernames'][game['ids'].index(next_turn)]}",
         reply_markup=build_board(game["board"], next_turn),
         parse_mode="HTML"
-  )
+    )
