@@ -55,8 +55,7 @@ async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 "<b>📖 Tic Tac Toe Help</b>\n\n"
                 "<code>/challenge</code> - Challenge someone to a game\n"
                 "<code>/myscore</code> - Check your score\n"
-                "<code>/topscore</code> - Global top players\n"
-                "<code>/topscoregroup</code> - Top players in this group",
+                "<code>/topscore</code> - Global top players\n", 
                 parse_mode="HTML",
                 reply_markup=InlineKeyboardMarkup([
                     [InlineKeyboardButton("🔙 Back", callback_data="start_back")]
@@ -69,8 +68,7 @@ async def help_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 "<b>📖 Tic Tac Toe Help</b>\n\n"
                 "<code>/challenge</code> - Challenge someone to a game\n"
                 "<code>/myscore</code> - Check your score\n"
-                "<code>/topscore</code> - Global top players\n"
-                "<code>/topscoregroup</code> - Top players in this group",
+                "<code>/topscore</code> - Global top players\n", 
                 parse_mode="HTML",
                 reply_markup=InlineKeyboardMarkup([
                     [InlineKeyboardButton("🔙 Back", callback_data="start_back")]
@@ -127,7 +125,6 @@ async def help_2(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "`/challenge` - Start a game\n"
         "`/myscore` - See your total wins\n"
         "`/topscore` - Top global players\n"
-        "`/topscoregroup` - Top players in this group\n"
         "`/start` - Restart welcome message",
         parse_mode="Markdown",
         reply_markup=InlineKeyboardMarkup([
